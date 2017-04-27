@@ -1,6 +1,7 @@
 package com.hytch.lfp_base_recycleview_library;
 
 import android.content.Context;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 
 import com.hytch.lfp_base_recycleview_library.base.ItemViewDelegate;
@@ -13,17 +14,13 @@ import java.util.List;
  * 通用适配器
  */
 public abstract class CommonAdapter<T> extends MultiItemTypeAdapter<T> {
-  protected Context context;
   protected int layoutId;
-  protected List<T> dataList;
   protected LayoutInflater inflater;
 
-  public CommonAdapter(final Context context, final int layoutId, List<T> dataList) {
+  public CommonAdapter(final Context context, final int layoutId, SparseArray<T> dataList) {
     super(context, dataList);
-    this.context = context;
     inflater = LayoutInflater.from(context);
     this.layoutId = layoutId;
-    this.dataList = dataList;
 
     addItemViewDelegate(new ItemViewDelegate<T>() {
       @Override
@@ -37,11 +34,11 @@ public abstract class CommonAdapter<T> extends MultiItemTypeAdapter<T> {
       }
 
       @Override
-      public void convert(LfpViewHolder holder, T t, int position) {
-        CommonAdapter.this.convert(holder, t, position);
+      public void convert(LfpViewHolder holder, T item, int position) {
+        CommonAdapter.this.convert(holder, item, position);
       }
     });
   }
 
-  protected abstract void convert(LfpViewHolder holder, T t, int position);
+  protected abstract void convert(LfpViewHolder holder, T item, int position);
 }

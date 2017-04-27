@@ -1,52 +1,89 @@
 package hytch.com.lfp_base_recycleview_master;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.SparseArray;
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
+
+import com.hytch.lfp_base_recycleview_library.MultiItemTypeAdapter;
+import com.hytch.lfp_base_recycleview_library.anim.AnimateHelper;
+
+import java.util.Random;
+
+import hytch.com.lfp_base_recycleview_master.adapter.StudentAdapter;
+import hytch.com.lfp_base_recycleview_master.bean.Student;
 
 public class MainActivity extends AppCompatActivity {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+  RecyclerView mRecyclerView;
+  SwipeRefreshLayout mSwipeRefreshLayout;
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+  StudentAdapter mStudentAdapter;
+  SparseArray<Student> oStudentSparseArray;
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+
+    mRecyclerView = (RecyclerView) findViewById(R.id.recycler_id);
+    mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_id);
+
+    mSwipeRefreshLayout.setColorSchemeResources(
+        android.R.color.holo_blue_light, android.R.color.holo_red_light,
+        android.R.color.holo_orange_light, android.R.color.holo_green_light);
+
+    oStudentSparseArray = new SparseArray<>();
+    for (int i = 0; i < 6; i++) {
+      Student student = new Student(i, "n" + i, i);
+      oStudentSparseArray.append(i, student);
     }
+    mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+      @Override
+      public void onRefresh() {
+        new Handler().postDelayed(new Runnable() {
+          @Override
+          public void run() {
+            refreshData();
+          }
+        }, 2000);
+      }
+    });
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
+    mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+    mRecyclerView.setItemAnimator(AnimateHelper.animation(AnimateHelper.SCALE_LEFT, 10f));
+    mStudentAdapter = new StudentAdapter(this, R.layout.item_recy, oStudentSparseArray);
+    mRecyclerView.setAdapter(mStudentAdapter);
+    mStudentAdapter.setOnItemClickListener(new MultiItemTypeAdapter.SimpleOnItemClickListener() {
+      @Override
+      public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+        super.onItemClick(view, holder, position);
+      }
+    });
+  }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+  private void refreshData() {
+    SparseArray<Student> nStudentSparseArray = new SparseArray<>();
+    Random random = new Random();
+    for (int i = 0; i < 5; i++) {
+      Student student;
+      if (i == 1) {
+        student = new Student(i, "n" + random.nextInt(5), random.nextInt(6));
+      } else if (i == 3) {
+        student = new Student(i, "n" + random.nextInt(10), random.nextInt(18));
+      } else {
+        student = oStudentSparseArray.get(i);
+        if (student == null) {
+          student = new Student(i, "n" + i, i);
         }
-
-        return super.onOptionsItemSelected(item);
+      }
+      nStudentSparseArray.append(i, student);
     }
+    mStudentAdapter.setDateResult(nStudentSparseArray);
+    mSwipeRefreshLayout.setRefreshing(false);
+  }
 }
