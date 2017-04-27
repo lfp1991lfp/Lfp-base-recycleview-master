@@ -1,5 +1,6 @@
 package hytch.com.lfp_base_recycleview_master;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -11,6 +12,7 @@ import android.view.View;
 
 import com.hytch.lfp_base_recycleview_library.MultiItemTypeAdapter;
 import com.hytch.lfp_base_recycleview_library.anim.AnimateHelper;
+import com.hytch.lfp_base_recycleview_library.itemdecoration.HorizontalDividerItemDecoration;
 
 import java.util.Random;
 
@@ -56,6 +58,12 @@ public class MainActivity extends AppCompatActivity {
 
     mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     mRecyclerView.setItemAnimator(AnimateHelper.animation(AnimateHelper.SCALE_LEFT, 10f));
+    mRecyclerView.addItemDecoration(
+        new HorizontalDividerItemDecoration.Builder(this)
+            .color(Color.CYAN)
+            .size(2)
+            .margin(4)
+            .build());
     mStudentAdapter = new StudentAdapter(this, R.layout.item_recy, oStudentSparseArray);
     mRecyclerView.setAdapter(mStudentAdapter);
     mStudentAdapter.setOnItemClickListener(new MultiItemTypeAdapter.SimpleOnItemClickListener() {
