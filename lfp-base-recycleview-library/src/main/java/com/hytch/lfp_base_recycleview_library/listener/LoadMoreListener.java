@@ -77,6 +77,8 @@ public class LoadMoreListener extends RecyclerView.OnScrollListener {
           }
         }
         break;
+      default:
+        break;
     }
   }
 
