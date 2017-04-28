@@ -22,7 +22,8 @@ import in.srain.cube.views.ptr.PtrUIHandler;
 @SuppressWarnings("unused")
 public class UltraPullRefreshView implements LoadMoreListener.OnLoadMoreListener {
 
-  private View view, mHeadView;
+  private View view;
+  private View headView;
   private PtrFrameLayout frameLayout;
   private RecyclerView recyclerView;
   private RefreshListener listener;
@@ -30,11 +31,11 @@ public class UltraPullRefreshView implements LoadMoreListener.OnLoadMoreListener
   private LoadMoreListener onLoadListener = new LoadMoreListener();
   private Context context;
   private boolean over = false; //数据是否加载完全
-  private Builder mBuilder;
+  private Builder builder;
 
-  UltraPullRefreshView(Context context, Builder builder) {
+  private UltraPullRefreshView(Context context, Builder builder) {
     this.context = context;
-    this.mBuilder = builder;
+    this.builder = builder;
     initView();
   }
 
@@ -43,19 +44,19 @@ public class UltraPullRefreshView implements LoadMoreListener.OnLoadMoreListener
     frameLayout = (PtrFrameLayout) view.findViewById(R.id.ultra_pull);
     recyclerView = (RecyclerView) view.findViewById(R.id.all_order_ry);
 
-    setListener(mBuilder.listener);
-    initHeadView(mBuilder.headView);
-    enableRefresh(mBuilder.enableRefresh, mHeadView);
-    enableLoadMore(mBuilder.enableLoadMore);
-    loadOver(mBuilder.loadOver);
+    setListener(builder.listener);
+    initHeadView(builder.headView);
+    enableRefresh(builder.enableRefresh, headView);
+    enableLoadMore(builder.enableLoadMore);
+    loadOver(builder.loadOver);
   }
 
   private void initHeadView(Object headView) {
     if (headView != null) {
       if (headView instanceof View) {
-        this.mHeadView = (View) headView;
+        this.headView = (View) headView;
       } else if (headView instanceof Integer) {
-        this.mHeadView = LayoutInflater.from(context).inflate((int) headView, null);
+        this.headView = LayoutInflater.from(context).inflate((int) headView, null);
       }
     } else {
       RefreshHeadView tempHead = new RefreshHeadView(context);
@@ -66,7 +67,7 @@ public class UltraPullRefreshView implements LoadMoreListener.OnLoadMoreListener
       tempHead.setRefreshingText(context.getString(R.string.ultra_down_list_header_refresh_text));
       tempHead.setRefreshCompleteText(context.getString(R.string
           .ultra_down_list_header_complete_text));
-      this.mHeadView = tempHead;
+      this.headView = tempHead;
     }
   }
 
@@ -87,7 +88,7 @@ public class UltraPullRefreshView implements LoadMoreListener.OnLoadMoreListener
     this.listener = listener;
   }
 
-  public void enableRefresh(final boolean enable, View headView) {
+  private void enableRefresh(final boolean enable, View headView) {
     if (enable) {
       frameLayout.setHeaderView(headView);
       if (headView instanceof PtrUIHandler) {
@@ -122,7 +123,7 @@ public class UltraPullRefreshView implements LoadMoreListener.OnLoadMoreListener
     }
   }
 
-  public void enableLoadMore(boolean enableLoadMore) {
+  private void enableLoadMore(boolean enableLoadMore) {
     if (enableLoadMore) {
       getRecyclerView().addOnScrollListener(onLoadListener);   //添加滚动事件判断
       onLoadListener.setOnLoadListener(this);
@@ -158,12 +159,11 @@ public class UltraPullRefreshView implements LoadMoreListener.OnLoadMoreListener
     private Context context;
     private Object headView;
 
+    public Builder(Context context) {
+      this.context = context;
+    }
     public void setHeadView(Object headView) {
       this.headView = headView;
-    }
-
-    public void setContext(Context context) {
-      this.context = context;
     }
 
     public Builder setListener(RefreshListener listener) {

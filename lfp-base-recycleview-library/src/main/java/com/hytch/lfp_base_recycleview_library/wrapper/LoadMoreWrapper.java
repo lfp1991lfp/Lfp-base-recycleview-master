@@ -12,14 +12,16 @@ import com.hytch.lfp_base_recycleview_library.utils.WrapperUtils;
 
 /**
  * Created by lfp on 2017/4/25.
- * 加载更多包装类
+ * 加载更多包装类,自动滑到最后一个加载更多
  */
+@Deprecated
 public class LoadMoreWrapper<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
   public static final int ITEM_TYPE_LOAD_MORE = Integer.MAX_VALUE - 2;
 
   private RecyclerView.Adapter innerAdapter;
   private View loadMoreView;
   private int loadMoreLayoutId;
+  private OnLoadMoreListener mOnLoadMoreListener;
 
   public LoadMoreWrapper(RecyclerView.Adapter adapter) {
     innerAdapter = adapter;
@@ -28,7 +30,6 @@ public class LoadMoreWrapper<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
   private boolean hasLoadMore() {
     return loadMoreView != null || loadMoreLayoutId != 0;
   }
-
 
   private boolean isShowLoadMore(int position) {
     return hasLoadMore() && (position >= innerAdapter.getItemCount());
@@ -85,7 +86,6 @@ public class LoadMoreWrapper<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
     });
   }
 
-
   @Override
   public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
     innerAdapter.onViewAttachedToWindow(holder);
@@ -111,13 +111,6 @@ public class LoadMoreWrapper<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
     return innerAdapter.getItemCount() + (hasLoadMore() ? 1 : 0);
   }
 
-
-  public interface OnLoadMoreListener {
-    void onLoadMoreRequested();
-  }
-
-  private OnLoadMoreListener mOnLoadMoreListener;
-
   public LoadMoreWrapper setOnLoadMoreListener(OnLoadMoreListener loadMoreListener) {
     if (loadMoreListener != null) {
       mOnLoadMoreListener = loadMoreListener;
@@ -133,5 +126,9 @@ public class LoadMoreWrapper<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
   public LoadMoreWrapper setLoadMoreView(int layoutId) {
     loadMoreLayoutId = layoutId;
     return this;
+  }
+
+  public interface OnLoadMoreListener {
+    void onLoadMoreRequested();
   }
 }

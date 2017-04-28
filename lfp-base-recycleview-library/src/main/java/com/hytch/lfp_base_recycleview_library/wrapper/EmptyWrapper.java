@@ -13,30 +13,30 @@ import com.hytch.lfp_base_recycleview_library.utils.WrapperUtils;
  * Created by lfp on 2017/4/25.
  * 空的包装类
  */
-public class EmptyWrapper<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public abstract class EmptyWrapper<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
   public static final int ITEM_TYPE_EMPTY = Integer.MAX_VALUE - 1;
 
-  private RecyclerView.Adapter innerAdapter;
-  private View emptyView;
-  private int emptyLayoutId;
-
+  protected RecyclerView.Adapter innerAdapter;
 
   public EmptyWrapper(RecyclerView.Adapter adapter) {
     innerAdapter = adapter;
   }
 
-  private boolean isEmpty() {
-    return (emptyView != null || emptyLayoutId != 0) && innerAdapter.getItemCount() == 0;
+  protected boolean isEmpty() {
+    return (emptyView() != null || emptyResId() != 0) && innerAdapter.getItemCount() == 0;
   }
 
   @Override
   public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     if (isEmpty()) {
       LfpViewHolder holder;
-      if (emptyView != null) {
-        holder = LfpViewHolder.createViewHolder(parent.getContext(), emptyView);
+      if (emptyView() != null) {
+        holder = LfpViewHolder.createViewHolder(parent.getContext(), emptyView());
+      } else if (emptyResId() != 0) {
+        holder = LfpViewHolder.createViewHolder(parent.getContext(), parent, emptyResId());
       } else {
-        holder = LfpViewHolder.createViewHolder(parent.getContext(), parent, emptyLayoutId);
+        throw new IllegalStateException(
+            "请设置空视图界面的资源文件");
       }
       return holder;
     }
@@ -94,13 +94,7 @@ public class EmptyWrapper<T> extends RecyclerView.Adapter<RecyclerView.ViewHolde
     return innerAdapter.getItemCount();
   }
 
+  public abstract int emptyResId();
 
-  public void setEmptyView(View emptyView) {
-    this.emptyView = emptyView;
-  }
-
-  public void setEmptyView(int layoutId) {
-    emptyLayoutId = layoutId;
-  }
-
+  public abstract View emptyView();
 }
