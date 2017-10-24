@@ -1,10 +1,11 @@
 package hytch.com.lfp_base_recycleview_master.adapter;
 
 import android.content.Context;
-import android.util.SparseArray;
 
 import com.hytch.lfp_base_recycleview_library.CommonAdapter;
 import com.hytch.lfp_base_recycleview_library.base.LfpViewHolder;
+
+import java.util.List;
 
 import hytch.com.lfp_base_recycleview_master.R;
 import hytch.com.lfp_base_recycleview_master.bean.Student;
@@ -16,7 +17,7 @@ import hytch.com.lfp_base_recycleview_master.bean.Student;
 
 public class StudentAdapter extends CommonAdapter<Student> {
 
-  public StudentAdapter(Context context, int layoutId, SparseArray<Student> studentSparseArray) {
+  public StudentAdapter(Context context, int layoutId, List<Student> studentSparseArray) {
     super(context, layoutId, studentSparseArray);
   }
 
@@ -37,8 +38,8 @@ public class StudentAdapter extends CommonAdapter<Student> {
   }
 
   @Override
-  protected Student getChangePayload(SparseArray<Student> oldList, int oldItemPosition,
-                                     SparseArray<Student> newList, int newItemPosition) {
+  protected Student getChangePayload(List<Student> oldList, int oldItemPosition,
+                                     List<Student> newList, int newItemPosition) {
     if (!oldList.get(oldItemPosition).getName().equals(newList.get(newItemPosition).getName())) {
       return newList.get(newItemPosition);
     }

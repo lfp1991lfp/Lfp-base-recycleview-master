@@ -17,11 +17,6 @@ public final class AnimateHelper {
   public static final int SCALE_BOTTOM = 0x02;
   public static final int SCALE_LEFT = 0x03;
 
-  @IntDef({SCALE_RIGHT, SCALE_BOTTOM, SCALE_LEFT})
-  @Retention(RetentionPolicy.SOURCE)
-  public @interface ItemAnimation {
-  }
-
   public static BaseItemAnimator animation(@ItemAnimation int animator, float level) {
     switch (animator) {
       case SCALE_LEFT:
@@ -31,5 +26,10 @@ public final class AnimateHelper {
       default:
         return new ScaleInRightAnimator(new OvershootInterpolator(level));
     }
+  }
+
+  @IntDef({SCALE_RIGHT, SCALE_BOTTOM, SCALE_LEFT})
+  @Retention(RetentionPolicy.SOURCE)
+  public @interface ItemAnimation {
   }
 }

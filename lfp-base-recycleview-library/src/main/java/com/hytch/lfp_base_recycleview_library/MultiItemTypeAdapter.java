@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
-import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -12,6 +11,7 @@ import com.hytch.lfp_base_recycleview_library.base.ItemViewDelegate;
 import com.hytch.lfp_base_recycleview_library.base.ItemViewDelegateManager;
 import com.hytch.lfp_base_recycleview_library.base.LfpViewHolder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,14 +21,14 @@ import java.util.List;
 
 public abstract class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<LfpViewHolder> {
 
-  private final Context context;
-  protected SparseArray<T> dataList;
+  protected final Context context;
+  private List<T> dataList;
   private ItemViewDelegateManager<T> itemViewDelegateManager;
   private OnItemClickListener onItemClickListener;
 
-  public MultiItemTypeAdapter(Context context, SparseArray<T> dataList) {
+  public MultiItemTypeAdapter(Context context, List<T> dataList) {
     this.context = context;
-    this.dataList = (dataList == null ? new SparseArray<T>() : dataList);
+    this.dataList = dataList != null ? dataList : new ArrayList<T>();
     this.itemViewDelegateManager = new ItemViewDelegateManager<>();
   }
 
@@ -109,12 +109,13 @@ public abstract class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<LfpVi
    *
    * @return 数据集的集合
    */
-  public SparseArray<T> getDataList() {
+  public List<T> getDataList() {
     return dataList;
   }
 
-  public void setDataList(SparseArray<T> newDataList) {
-    this.dataList = newDataList;
+  private void setDataList(List<T> newDataList) {
+    this.dataList.clear();
+    this.dataList.addAll(newDataList);
   }
 
   public MultiItemTypeAdapter addItemViewDelegate(ItemViewDelegate<T> itemViewDelegate) {
@@ -130,6 +131,59 @@ public abstract class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<LfpVi
 
   protected boolean useItemViewDelegateManager() {
     return itemViewDelegateManager.getItemViewDelegateCount() > 0;
+  }
+
+  public void setDateResult(List<T> newList) {
+    DiffUtil.DiffResult diffResult =
+        DiffUtil.calculateDiff(new DataCallBack(dataList, newList));
+    diffResult.dispatchUpdatesTo(this);
+    setDataList(newList);
+  }
+
+  public void addAll(List<T> newList) {
+    int position = dataList.size();
+    dataList.addAll(newList);
+    notifyItemInserted(position);
+  }
+
+  /**
+   * 局部刷新
+   *
+   * @param oldItemPosition 旧的位置
+   * @param newItemPosition 新的位置
+   * @return
+   */
+  protected T getChangePayload(
+      List<T> oldList, int oldItemPosition, List<T> newList, int newItemPosition) {
+    return null;
+  }
+
+  public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+    this.onItemClickListener = onItemClickListener;
+  }
+
+  /**
+   * 比较唯一吗相同，一般是ID.
+   *
+   * @param item1 value1
+   * @param item2 value2
+   * @return true表示一样，否则不是不一样
+   */
+  protected abstract boolean areItemsTheSame(T item1, T item2);
+
+  /**
+   * 若id一样，则比较下一个内容
+   *
+   * @param item1 value1
+   * @param item2 value2
+   * @return true表示一样，否则不是不一样
+   */
+  protected abstract boolean areContentsTheSame(T item1, T item2);
+
+  public interface OnItemClickListener {
+    void onItemClick(View view, RecyclerView.ViewHolder holder, int position);
+
+    boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position);
   }
 
   /**
@@ -150,19 +204,12 @@ public abstract class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<LfpVi
     }
   }
 
-  public void setDateResult(SparseArray<T> newSparseArray) {
-    DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DataCallBack(dataList,
-        newSparseArray));
-    diffResult.dispatchUpdatesTo(this);
-    setDataList(newSparseArray);
-  }
-
   private class DataCallBack extends DiffUtil.Callback {
 
-    private SparseArray<T> oldDataList;
-    private SparseArray<T> newDataList;
+    private List<T> oldDataList;
+    private List<T> newDataList;
 
-    public DataCallBack(SparseArray<T> oldDataList, SparseArray<T> newDataList) {
+    public DataCallBack(List<T> oldDataList, List<T> newDataList) {
       this.oldDataList = oldDataList;
       this.newDataList = newDataList;
     }
@@ -177,6 +224,13 @@ public abstract class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<LfpVi
       return newDataList.size();
     }
 
+    /**
+     * 比较两个集合中旧位置和新位置的值是否一致.
+     *
+     * @param oldItemPosition 旧位置
+     * @param newItemPosition 新位置
+     * @return true则执行areContentsTheSame方法
+     */
     @Override
     public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
       return MultiItemTypeAdapter.this.areItemsTheSame(oldDataList.get(oldItemPosition),
@@ -193,49 +247,18 @@ public abstract class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<LfpVi
           newDataList.get(newItemPosition));
     }
 
+    /**
+     * 局部刷新.
+     *
+     * @param oldItemPosition 旧位置
+     * @param newItemPosition 新位置
+     * @return 需要刷新的item
+     */
     @Nullable
     @Override
     public T getChangePayload(int oldItemPosition, int newItemPosition) {
-      return MultiItemTypeAdapter.this.getChangePayload(oldDataList, oldItemPosition, newDataList, newItemPosition);
+      return MultiItemTypeAdapter.this.getChangePayload(oldDataList, oldItemPosition,
+          newDataList, newItemPosition);
     }
   }
-
-  /**
-   * 局部刷新
-   *
-   * @param oldItemPosition 旧的位置
-   * @param newItemPosition 新的位置
-   * @return
-   */
-  protected T getChangePayload(SparseArray<T> oldList, int oldItemPosition, SparseArray<T> newList, int newItemPosition) {
-    return null;
-  }
-
-  public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-    this.onItemClickListener = onItemClickListener;
-  }
-
-  public interface OnItemClickListener {
-    void onItemClick(View view, RecyclerView.ViewHolder holder, int position);
-
-    boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position);
-  }
-
-  /**
-   * 比较唯一吗相同，一般是ID.
-   *
-   * @param item1 value1
-   * @param item2 value2
-   * @return true表示一样，否则不是不一样
-   */
-  protected abstract boolean areItemsTheSame(T item1, T item2);
-
-  /**
-   * 若id一样，则比较下一个内容
-   *
-   * @param item1 value1
-   * @param item2 value2
-   * @return true表示一样，否则不是不一样
-   */
-  protected abstract boolean areContentsTheSame(T item1, T item2);
 }

@@ -13,34 +13,47 @@ import com.hytch.lfp_base_recycleview_library.utils.WrapperUtils;
  * Created by lfp on 2017/4/25.
  * 空的包装类
  */
-public abstract class EmptyWrapper<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class EmptyWrapper<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
   public static final int ITEM_TYPE_EMPTY = Integer.MAX_VALUE - 1;
 
   protected RecyclerView.Adapter innerAdapter;
+  private int emptyId;
+  private View emptyView;
 
   public EmptyWrapper(RecyclerView.Adapter adapter) {
     innerAdapter = adapter;
   }
 
   protected boolean isEmpty() {
-    return (emptyView() != null || emptyResId() != 0) && innerAdapter.getItemCount() == 0;
+    return (emptyView != null || emptyId != 0) && innerAdapter.getItemCount() == 0;
   }
 
   @Override
   public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     if (isEmpty()) {
       LfpViewHolder holder;
-      if (emptyView() != null) {
-        holder = LfpViewHolder.createViewHolder(parent.getContext(), emptyView());
-      } else if (emptyResId() != 0) {
-        holder = LfpViewHolder.createViewHolder(parent.getContext(), parent, emptyResId());
+      if (emptyView != null) {
+        holder = LfpViewHolder.createViewHolder(parent.getContext(), emptyView);
+      } else if (emptyId != 0) {
+        holder = LfpViewHolder.createViewHolder(parent.getContext(), parent, emptyId);
       } else {
         throw new IllegalStateException(
             "请设置空视图界面的资源文件");
       }
+      holder.getConvertView().setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          System.out.print("");
+          onClickView(v);
+        }
+      });
       return holder;
     }
     return innerAdapter.onCreateViewHolder(parent, viewType);
+  }
+
+  public void onClickView(View v) {
+
   }
 
   @Override
@@ -94,7 +107,11 @@ public abstract class EmptyWrapper<T> extends RecyclerView.Adapter<RecyclerView.
     return innerAdapter.getItemCount();
   }
 
-  public abstract int emptyResId();
+  public void emptyResId(int emptyId) {
+    this.emptyId = emptyId;
+  }
 
-  public abstract View emptyView();
+  public void emptyView(View emptyView) {
+    this.emptyView = emptyView;
+  }
 }

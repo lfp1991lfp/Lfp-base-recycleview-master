@@ -10,11 +10,6 @@ import android.view.ViewGroup;
  * 包装类的操作类
  */
 public class WrapperUtils {
-  public interface SpanSizeCallback {
-    int getSpanSize(GridLayoutManager layoutManager, GridLayoutManager.SpanSizeLookup
-        oldLookup, int position);
-  }
-
   /**
    * 包装类适配器工具类.
    *
@@ -56,5 +51,10 @@ public class WrapperUtils {
 
       p.setFullSpan(true);
     }
+  }
+
+  public interface SpanSizeCallback {
+    int getSpanSize(GridLayoutManager layoutManager, GridLayoutManager.SpanSizeLookup
+        oldLookup, int position);
   }
 }

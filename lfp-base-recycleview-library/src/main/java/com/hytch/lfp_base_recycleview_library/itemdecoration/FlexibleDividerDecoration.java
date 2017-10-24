@@ -18,7 +18,7 @@ import android.view.View;
 
 /**
  * Created by lfp on 2017/4/27.
- * recyclerView划线管理
+ * recyclerView分割线管理
  */
 
 public abstract class FlexibleDividerDecoration extends RecyclerView.ItemDecoration {

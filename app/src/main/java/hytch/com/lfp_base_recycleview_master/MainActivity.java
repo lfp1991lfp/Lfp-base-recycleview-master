@@ -1,19 +1,19 @@
 package hytch.com.lfp_base_recycleview_master;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.SparseArray;
 import android.view.View;
 
 import com.hytch.lfp_base_recycleview_library.MultiItemTypeAdapter;
 import com.hytch.lfp_base_recycleview_library.anim.AnimateHelper;
 import com.hytch.lfp_base_recycleview_library.itemdecoration.HorizontalDividerItemDecoration;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import hytch.com.lfp_base_recycleview_master.adapter.StudentAdapter;
@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
   SwipeRefreshLayout mSwipeRefreshLayout;
 
   StudentAdapter mStudentAdapter;
-  SparseArray<Student> oStudentSparseArray;
+  List<Student> oStudentSparseArray;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +39,10 @@ public class MainActivity extends AppCompatActivity {
         android.R.color.holo_blue_light, android.R.color.holo_red_light,
         android.R.color.holo_orange_light, android.R.color.holo_green_light);
 
-    oStudentSparseArray = new SparseArray<>();
+    oStudentSparseArray = new ArrayList<>();
     for (int i = 0; i < 6; i++) {
       Student student = new Student(i, "n" + i, i);
-      oStudentSparseArray.append(i, student);
+      oStudentSparseArray.add(student);
     }
     mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
       @Override
@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     mRecyclerView.setItemAnimator(AnimateHelper.animation(AnimateHelper.SCALE_LEFT, 10f));
     mRecyclerView.addItemDecoration(
         new HorizontalDividerItemDecoration.Builder(this)
-            .color(Color.CYAN)
+            .colorResId(R.color.no_data_bg)
             .size(2)
             .margin(4)
             .build());
@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
   }
 
   private void refreshData() {
-    SparseArray<Student> nStudentSparseArray = new SparseArray<>();
+    List<Student> nStudentSparseArray = new ArrayList<>();
     Random random = new Random();
     for (int i = 0; i < 5; i++) {
       Student student;
@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
           student = new Student(i, "n" + i, i);
         }
       }
-      nStudentSparseArray.append(i, student);
+      nStudentSparseArray.add(student);
     }
     mStudentAdapter.setDateResult(nStudentSparseArray);
     mSwipeRefreshLayout.setRefreshing(false);

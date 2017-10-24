@@ -48,7 +48,8 @@ public class RefreshHeadView extends FrameLayout implements PtrUIHandler {
   }
 
   private void initView(Context context) {
-    ViewGroup headView = (ViewGroup) LayoutInflater.from(context).inflate(R.layout.refresh_header_normal, this, true);
+    ViewGroup headView = (ViewGroup) LayoutInflater.from(context).inflate(R.layout
+        .refresh_header_normal, this, true);
     tvHeadTitle = (TextView) headView.findViewById(R.id.tv_normal_refresh_header_status);
     headImage = (ImageView) headView.findViewById(R.id.iv_normal_refresh_header);
   }
@@ -82,7 +83,8 @@ public class RefreshHeadView extends FrameLayout implements PtrUIHandler {
   }
 
   @Override
-  public void onUIPositionChange(PtrFrameLayout frame, boolean isUnderTouch, byte status, PtrIndicator ptrIndicator) {
+  public void onUIPositionChange(PtrFrameLayout frame, boolean isUnderTouch, byte status,
+                                 PtrIndicator ptrIndicator) {
     final int mOffsetToRefresh = frame.getOffsetToRefresh();
     final int currentPos = ptrIndicator.getCurrentPosY();
     final int lastPos = ptrIndicator.getLastPosY();

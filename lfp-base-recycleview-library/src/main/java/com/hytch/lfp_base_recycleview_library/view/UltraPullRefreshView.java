@@ -162,6 +162,7 @@ public class UltraPullRefreshView implements LoadMoreListener.OnLoadMoreListener
     public Builder(Context context) {
       this.context = context;
     }
+
     public void setHeadView(Object headView) {
       this.headView = headView;
     }

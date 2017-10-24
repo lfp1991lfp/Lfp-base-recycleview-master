@@ -1,12 +1,16 @@
 apply plugin: 'com.android.library'
+apply plugin: 'maven'
+
+def cfg = rootProject.ext.sdkconfiguration
+def uiLibs = rootProject.ext.uilibraries
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion cfg.compileSdkVersion
+    buildToolsVersion cfg.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 25
+        minSdkVersion cfg.minSdkVersion
+        targetSdkVersion cfg.targetSdkVersion
         versionCode 1
         versionName "1.0"
 
@@ -21,13 +25,22 @@ android {
     }
 }
 
+uploadArchives {
+    repositories.mavenDeployer {
+        repository(url: "http://10.98.0.81:8081/repository/hytch-android/") {
+            authentication(userName: 'hytch-park', password: 'hytchpark')
+        }
+        pom.version = "0.0.1"  //版本号
+        pom.artifactId = "hytch-recyler-adapter"
+        pom.groupId = "hytchpark"
+    }
+}
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:recyclerview-v7:25.3.1'
+    compile "com.android.support:appcompat-v7:$uiLibs.supportLibraryVersion"
+    compile "com.android.support:recyclerview-v7:$uiLibs.supportLibraryVersion"
     compile 'in.srain.cube:ultra-ptr:1.0.11'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
     testCompile 'junit:junit:4.12'
 }

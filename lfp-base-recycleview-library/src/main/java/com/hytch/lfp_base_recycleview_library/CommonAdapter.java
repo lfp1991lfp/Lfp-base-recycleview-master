@@ -1,7 +1,6 @@
 package com.hytch.lfp_base_recycleview_library;
 
 import android.content.Context;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 
 import com.hytch.lfp_base_recycleview_library.base.ItemViewDelegate;
@@ -17,7 +16,7 @@ public abstract class CommonAdapter<T> extends MultiItemTypeAdapter<T> {
   protected int layoutId;
   protected LayoutInflater inflater;
 
-  public CommonAdapter(final Context context, final int layoutId, SparseArray<T> dataList) {
+  public CommonAdapter(final Context context, final int layoutId, List<T> dataList) {
     super(context, dataList);
     inflater = LayoutInflater.from(context);
     this.layoutId = layoutId;
