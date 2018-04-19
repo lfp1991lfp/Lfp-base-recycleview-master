@@ -1,8 +1,2 @@
-<manifest
-    package="com.hytch.lfp_base_recycleview_library">
-
-    <application>
-
-    </application>
-
-</manifest>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.lfp.lfp_base_recycleview_library" />

@@ -2,8 +2,8 @@ package hytch.com.lfp_base_recycleview_master.adapter;
 
 import android.content.Context;
 
-import com.hytch.lfp_base_recycleview_library.CommonAdapter;
-import com.hytch.lfp_base_recycleview_library.base.LfpViewHolder;
+import com.lfp.lfp_base_recycleview_library.CommonAdapter;
+import com.lfp.lfp_base_recycleview_library.base.LfpViewHolder;
 
 import java.util.List;
 

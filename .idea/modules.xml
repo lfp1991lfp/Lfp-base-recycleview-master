@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Lfp-base-recycleview-master.iml" filepath="$PROJECT_DIR$/Lfp-base-recycleview-master.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Lfp-base-recycleview-master.iml" filepath="$PROJECT_DIR$/.idea/Lfp-base-recycleview-master.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/lfp-base-recycleview-library/lfp-base-recycleview-library.iml" filepath="$PROJECT_DIR$/lfp-base-recycleview-library/lfp-base-recycleview-library.iml" />
     </modules>

@@ -8,9 +8,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.hytch.lfp_base_recycleview_library.MultiItemTypeAdapter;
-import com.hytch.lfp_base_recycleview_library.anim.AnimateHelper;
-import com.hytch.lfp_base_recycleview_library.itemdecoration.HorizontalDividerItemDecoration;
+import com.lfp.lfp_base_recycleview_library.MultiItemTypeAdapter;
+import com.lfp.lfp_base_recycleview_library.anim.AnimateHelper;
+import com.lfp.lfp_base_recycleview_library.itemdecoration.HorizontalDividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;

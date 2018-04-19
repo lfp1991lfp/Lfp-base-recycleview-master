@@ -2,12 +2,14 @@
 
 buildscript {
     repositories {
-        jcenter()
-        mavenLocal()
+        mavenCentral()
+//        maven {
+//            url 'https://oss.sonatype.org/content/repositories/releases'
+//        }
+        google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.3'
-
+        classpath 'com.android.tools.build:gradle:3.1.1'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -15,7 +17,11 @@ buildscript {
 
 allprojects {
     repositories {
-        jcenter()
+        mavenCentral()
+//        maven {
+//            url 'https://oss.sonatype.org/content/repositories/releases'
+//        }
+        google()
     }
 }
 
@@ -28,39 +34,12 @@ ext {
     sdkconfiguration = [
             // Sdk and tools
             minSdkVersion    : 15,
-            targetSdkVersion : 25,
-            compileSdkVersion: 25,
-            buildToolsVersion: '25.0.3'
-    ]
-
-    testlibraries = [
-            //Test dependencies
-            junitVersion   : '4.12',
-            espressoVersion: '2.2.2',
-            mockitoVersion : '2.7.22',
-            hamcrest       : '1.3',
-            runnerVersion  : '0.5',
-            leakcanary     : '1.5'
+            targetSdkVersion : 26,
+            compileSdkVersion: 26,
+            buildToolsVersion: '27.0.3'
     ]
     uilibraries = [
             //UI库的统一管理
-            supportLibraryVersion: '25.3.1',
-            butterknife          : '8.8.1',
-            rxbinding            : '2.0.0'
-    ]
-    comlibraries = [
-            //逻辑库统一管理
-            retrofit             : '2.3.0',
-            retrofitConverterGson: '2.3.0',
-            retrofitAdapterRxjava: '2.3.0',
-            retrofitSimplexml    : '2.3.0',
-            okhttp               : '3.8.0',
-            rxjava2              : '2.1.3',
-            rxjavaAndroid        : '2.0.1',
-            dagger               : '2.11',
-            daggerAndroid        : '2.11',
-            arouter              : '1.2.2',
-            arouterCompiler      : '1.1.3',
-            eventbus             : '3.0.0'
+            supportLibraryVersion: '27.1.1'
     ]
 }
