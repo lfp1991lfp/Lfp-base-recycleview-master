@@ -31,7 +31,7 @@ public class ScaleInRightAnimator extends BaseItemAnimator {
 
   @Override
   protected void preAnimateRemoveImpl(RecyclerView.ViewHolder holder) {
-    ViewCompat.setPivotX(holder.itemView, holder.itemView.getWidth());
+    holder.itemView.setPivotX(holder.itemView.getWidth());
   }
 
   @Override
@@ -47,9 +47,9 @@ public class ScaleInRightAnimator extends BaseItemAnimator {
 
   @Override
   protected void preAnimateAddImpl(RecyclerView.ViewHolder holder) {
-    ViewCompat.setPivotX(holder.itemView, holder.itemView.getWidth());
-    ViewCompat.setScaleX(holder.itemView, 0);
-    ViewCompat.setScaleY(holder.itemView, 0);
+    holder.itemView.setPivotX(holder.itemView.getWidth());
+    holder.itemView.setScaleX(0);
+    holder.itemView.setScaleY(0);
   }
 
   @Override

@@ -46,12 +46,12 @@ public abstract class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<LfpVi
         ItemViewDelegate itemViewDelegate = itemViewDelegateManager.getItemViewDelegate(viewType);
         int layoutId = itemViewDelegate.getItemViewLayoutId();
         LfpViewHolder holder = LfpViewHolder.createViewHolder(context, parent, layoutId);
-        onViewHolderCreated(holder, holder.getConvertView());
+        onViewHolderCreated(parent, holder, holder.getConvertView());
         setListener(parent, holder, viewType);
         return holder;
     }
 
-    public void onViewHolderCreated(LfpViewHolder holder, View itemView) {
+    public void onViewHolderCreated(ViewGroup parent, LfpViewHolder holder, View itemView) {
 
     }
 

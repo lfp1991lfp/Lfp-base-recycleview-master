@@ -1,5 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'maven'
 
 def cfg = rootProject.ext.sdkconfiguration
 def uiLibs = rootProject.ext.uilibraries
@@ -14,25 +13,28 @@ android {
         versionCode 1
         versionName "1.0"
 
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath = true
+            }
+        }
+
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
+
+    lintOptions {
+        textReport true
+        textOutput 'stdout'
+        // We run a full lint analysis as build part in CI, so skip vital checks for assemble tasks.
+        checkReleaseBuilds false
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-    }
-}
-
-uploadArchives {
-    repositories.mavenDeployer {
-        repository(url: "http://10.98.0.81:8081/repository/hytch-android/") {
-            authentication(userName: 'hytch-park', password: 'hytchpark')
-        }
-        pom.version = "0.0.1"  //版本号
-        pom.artifactId = "hytch-recyler-adapter"
-        pom.groupId = "hytchpark"
     }
 }
 
@@ -42,3 +44,5 @@ dependencies {
     implementation "com.android.support:recyclerview-v7:$uiLibs.supportLibraryVersion"
     testImplementation 'junit:junit:4.12'
 }
+
+apply from: rootProject.file('gradle/gradle-mvn-push.gradle')
