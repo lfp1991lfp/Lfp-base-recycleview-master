@@ -1,7 +1,7 @@
 package com.lfp.lfp_base_recycleview_library;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
+import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.lfp.lfp_base_recycleview_library.base.ItemViewDelegate;
 import com.lfp.lfp_base_recycleview_library.base.ItemViewDelegateManager;
 import com.lfp.lfp_base_recycleview_library.base.LfpViewHolder;
+import com.lfp.lfp_base_recycleview_library.callback.DataCallBack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.List;
  * 多视图适配器
  */
 
+@SuppressWarnings("unchecked")
 public abstract class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<LfpViewHolder> {
 
     protected final Context context;
@@ -42,7 +44,7 @@ public abstract class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<LfpVi
 
 
     @Override
-    public LfpViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public LfpViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         ItemViewDelegate itemViewDelegate = itemViewDelegateManager.getItemViewDelegate(viewType);
         int layoutId = itemViewDelegate.getItemViewLayoutId();
         LfpViewHolder holder = LfpViewHolder.createViewHolder(context, parent, layoutId);
@@ -59,6 +61,12 @@ public abstract class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<LfpVi
         itemViewDelegateManager.convert(holder, item, holder.getAdapterPosition());
     }
 
+    /**
+     * 供外层复写，若是类型不允许点击，则复写该方法.
+     *
+     * @param viewType 布局类型
+     * @return true表示可以点击, false表示不可以点击
+     */
     protected boolean isEnabled(int viewType) {
         return true;
     }
@@ -89,12 +97,12 @@ public abstract class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<LfpVi
     }
 
     @Override
-    public void onBindViewHolder(LfpViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull LfpViewHolder holder, int position) {
         convert(holder, dataList.get(position));
     }
 
     @Override
-    public void onBindViewHolder(LfpViewHolder holder, int position, List<Object> payloads) {
+    public void onBindViewHolder(@NonNull LfpViewHolder holder, int position, List<Object> payloads) {
         onBindViewHolder(holder, position);
     }
 
@@ -145,7 +153,7 @@ public abstract class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<LfpVi
      * @return 数据差异
      */
     public DiffUtil.DiffResult getDiffResult(List<T> newList) {
-        return DiffUtil.calculateDiff(new DataCallBack(dataList, newList));
+        return DiffUtil.calculateDiff(new DataCallBack(this, dataList, newList));
     }
 
     /**
@@ -159,12 +167,14 @@ public abstract class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<LfpVi
         setDataList(newList);
     }
 
+    @SuppressWarnings("unused")
     public void addAll(List<T> newList) {
         int position = dataList.size();
         dataList.addAll(newList);
         notifyItemInserted(position);
     }
 
+    @SuppressWarnings("unused")
     public void addAll(int position, List<T> newList) {
         dataList.addAll(position, newList);
         notifyItemInserted(position);
@@ -175,16 +185,10 @@ public abstract class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<LfpVi
      *
      * @param oldItemPosition 旧的位置
      * @param newItemPosition 新的位置
-     * @return
+     * @return 变换的数据源
      */
-    protected T getChangePayload(
-            List<T> oldList, int oldItemPosition, List<T> newList, int newItemPosition) {
-        return null;
-    }
-
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-        this.onItemClickListener = onItemClickListener;
-    }
+    public abstract T getChangePayload(
+            List<T> oldList, int oldItemPosition, List<T> newList, int newItemPosition);
 
     /**
      * 比较唯一吗相同，一般是ID.
@@ -193,7 +197,7 @@ public abstract class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<LfpVi
      * @param item2 value2
      * @return true表示一样，否则不是不一样
      */
-    protected abstract boolean areItemsTheSame(T item1, T item2);
+    public abstract boolean areItemsTheSame(T item1, T item2);
 
     /**
      * 若id一样，则比较下一个内容
@@ -202,7 +206,11 @@ public abstract class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<LfpVi
      * @param item2 value2
      * @return true表示一样，否则不是不一样
      */
-    protected abstract boolean areContentsTheSame(T item1, T item2);
+    public abstract boolean areContentsTheSame(T item1, T item2);
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
 
     public interface OnItemClickListener {
         void onItemClick(View view, RecyclerView.ViewHolder holder, int position);
@@ -228,61 +236,61 @@ public abstract class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<LfpVi
         }
     }
 
-    private class DataCallBack extends DiffUtil.Callback {
-
-        private List<T> oldDataList;
-        private List<T> newDataList;
-
-        public DataCallBack(List<T> oldDataList, List<T> newDataList) {
-            this.oldDataList = oldDataList;
-            this.newDataList = newDataList;
-        }
-
-        @Override
-        public int getOldListSize() {
-            return oldDataList.size();
-        }
-
-        @Override
-        public int getNewListSize() {
-            return newDataList.size();
-        }
-
-        /**
-         * 比较两个集合中旧位置和新位置的值是否一致.
-         *
-         * @param oldItemPosition 旧位置
-         * @param newItemPosition 新位置
-         * @return true则执行areContentsTheSame方法
-         */
-        @Override
-        public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-            return MultiItemTypeAdapter.this.areItemsTheSame(oldDataList.get(oldItemPosition),
-                    newDataList.get(newItemPosition));
-        }
-
-        /**
-         * This method is called only if {@link #areItemsTheSame(int, int)} returns
-         * {@code true} for these items.
-         */
-        @Override
-        public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-            return MultiItemTypeAdapter.this.areContentsTheSame(oldDataList.get(oldItemPosition),
-                    newDataList.get(newItemPosition));
-        }
-
-        /**
-         * 局部刷新.
-         *
-         * @param oldItemPosition 旧位置
-         * @param newItemPosition 新位置
-         * @return 需要刷新的item
-         */
-        @Nullable
-        @Override
-        public T getChangePayload(int oldItemPosition, int newItemPosition) {
-            return MultiItemTypeAdapter.this.getChangePayload(oldDataList, oldItemPosition,
-                    newDataList, newItemPosition);
-        }
-    }
+//    private class DataCallBack extends DiffUtil.Callback {
+//
+//        private List<T> oldDataList;
+//        private List<T> newDataList;
+//
+//        public DataCallBack(List<T> oldDataList, List<T> newDataList) {
+//            this.oldDataList = oldDataList;
+//            this.newDataList = newDataList;
+//        }
+//
+//        @Override
+//        public int getOldListSize() {
+//            return oldDataList.size();
+//        }
+//
+//        @Override
+//        public int getNewListSize() {
+//            return newDataList.size();
+//        }
+//
+//        /**
+//         * 比较两个集合中旧位置和新位置的值是否一致.
+//         *
+//         * @param oldItemPosition 旧位置
+//         * @param newItemPosition 新位置
+//         * @return true则执行areContentsTheSame方法
+//         */
+//        @Override
+//        public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+//            return MultiItemTypeAdapter.this.areItemsTheSame(oldDataList.get(oldItemPosition),
+//                    newDataList.get(newItemPosition));
+//        }
+//
+//        /**
+//         * This method is called only if {@link #areItemsTheSame(int, int)} returns
+//         * {@code true} for these items.
+//         */
+//        @Override
+//        public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+//            return MultiItemTypeAdapter.this.areContentsTheSame(oldDataList.get(oldItemPosition),
+//                    newDataList.get(newItemPosition));
+//        }
+//
+//        /**
+//         * 局部刷新.
+//         *
+//         * @param oldItemPosition 旧位置
+//         * @param newItemPosition 新位置
+//         * @return 需要刷新的item
+//         */
+//        @Nullable
+//        @Override
+//        public T getChangePayload(int oldItemPosition, int newItemPosition) {
+//            return MultiItemTypeAdapter.this.getChangePayload(oldDataList, oldItemPosition,
+//                    newDataList, newItemPosition);
+//        }
+//    }
 }

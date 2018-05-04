@@ -8,7 +8,7 @@ import android.support.v7.widget.RecyclerView;
  */
 public interface RefreshListener {
 
-  void onRefresh(RecyclerView recyclerView);
+    void onRefresh(RecyclerView recyclerView);
 
-  void onLoadMore(RecyclerView recyclerView);
+    void onLoadMore(RecyclerView recyclerView);
 }

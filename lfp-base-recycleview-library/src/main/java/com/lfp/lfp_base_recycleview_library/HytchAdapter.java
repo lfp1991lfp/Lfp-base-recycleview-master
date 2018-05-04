@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * Created by lfp on 2017/5/31.
- * 简单适配器
+ * 简单适配器,局部更新
  */
 
 public abstract class HytchAdapter<T> extends CommonAdapter<T> {
@@ -16,12 +16,17 @@ public abstract class HytchAdapter<T> extends CommonAdapter<T> {
   }
 
   @Override
-  protected boolean areItemsTheSame(T item1, T item2) {
+  public boolean areItemsTheSame(T item1, T item2) {
     return false;
   }
 
   @Override
-  protected boolean areContentsTheSame(T item1, T item2) {
+  public boolean areContentsTheSame(T item1, T item2) {
     return false;
+  }
+
+  @Override
+  public T getChangePayload(List<T> oldList, int oldItemPosition, List<T> newList, int newItemPosition) {
+    return null;
   }
 }

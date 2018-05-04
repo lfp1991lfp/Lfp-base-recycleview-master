@@ -16,12 +16,12 @@ public abstract class MultiItemHytchAdapter<T> extends MultiItemTypeAdapter<T> {
   }
 
   @Override
-  protected boolean areItemsTheSame(T item1, T item2) {
+  public boolean areItemsTheSame(T item1, T item2) {
     return false;
   }
 
   @Override
-  protected boolean areContentsTheSame(T item1, T item2) {
+  public boolean areContentsTheSame(T item1, T item2) {
     return false;
   }
 }
