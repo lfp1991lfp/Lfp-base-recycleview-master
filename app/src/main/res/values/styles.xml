@@ -17,4 +17,9 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="myTransparent" parent="@style/Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@color/quarter_transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <!--<item name="android:windowAnimationStyle">@style/fade</item>-->
+    </style>
 </resources>

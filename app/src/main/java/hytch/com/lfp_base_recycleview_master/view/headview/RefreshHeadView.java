@@ -10,8 +10,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.lfp.lfp_base_recycleview_library.R;
-
+import hytch.com.lfp_base_recycleview_master.R;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrUIHandler;
 import in.srain.cube.views.ptr.indicator.PtrIndicator;
@@ -50,8 +49,8 @@ public class RefreshHeadView extends FrameLayout implements PtrUIHandler {
   private void initView(Context context) {
     ViewGroup headView = (ViewGroup) LayoutInflater.from(context).inflate(R.layout
         .refresh_header_normal, this, true);
-    tvHeadTitle = (TextView) headView.findViewById(R.id.tv_normal_refresh_header_status);
-    headImage = (ImageView) headView.findViewById(R.id.iv_normal_refresh_header);
+      tvHeadTitle = headView.findViewById(R.id.tv_normal_refresh_header_status);
+      headImage = headView.findViewById(R.id.iv_normal_refresh_header);
   }
 
   @Override

@@ -6,4 +6,16 @@
     <string name="ultra_down_list_header_release_text">松开刷新</string>
     <string name="ultra_down_list_header_refresh_text">正在刷新&#8230;</string>
     <string name="ultra_down_list_header_complete_text">刷新完成</string>
+    <string name="snap_str">测试snap</string>
+
+    <integer-array name="img_array">
+        <item>@mipmap/m_1</item>
+        <item>@mipmap/m_2</item>
+        <item>@mipmap/m_3</item>
+        <item>@mipmap/m_4</item>
+        <item>@mipmap/m_5</item>
+        <item>@mipmap/m_6</item>
+        <item>@mipmap/m_7</item>
+        <item>@mipmap/m_8</item>
+    </integer-array>
 </resources>

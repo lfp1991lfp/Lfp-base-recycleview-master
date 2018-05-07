@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF4081</color>
     <color name="no_data_bg">#eaf3fc</color>
     <color name="textcolor_gray">#7d7d7d</color>
+    <color name="quarter_transparent">#40000000</color>
 </resources>

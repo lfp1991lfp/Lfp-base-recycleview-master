@@ -43,6 +43,7 @@ public abstract class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<LfpVi
     }
 
 
+    @NonNull
     @Override
     public LfpViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         ItemViewDelegate itemViewDelegate = itemViewDelegateManager.getItemViewDelegate(viewType);

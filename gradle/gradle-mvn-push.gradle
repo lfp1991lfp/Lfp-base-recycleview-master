@@ -1,0 +1,133 @@
+/*
+ * Copyright 2013 Chris Banes
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
+
+version = VERSION_NAME
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+def isReleaseBuild() {
+    return !VERSION_NAME.contains("SNAPSHOT")
+}
+
+if (project.getPlugins().hasPlugin('com.android.application') ||
+        project.getPlugins().hasPlugin('com.android.library')) {
+    bintray {
+        user = properties.getProperty("bintray.user")
+        key = properties.getProperty("bintray.apikey")
+        pkg {
+            repo = POM_ARTIFACT_ID //自己创建的仓库名字
+            name = POM_NAME //上传到JCenter的名字,最终引用的名字
+            websiteUrl = POM_URL
+            vcsUrl = POM_GIT_URL
+            // 软件开源协议，现在一般都是Apache License2.0吧，复制我的，这里不需要修改。
+            licenses = ["Apache-2.0"]
+//        userOrg = 'mumusalibrary' //自己创建的organization名称
+            publish = true // 是否是公开项目，公开别人可以引用
+
+            version {
+                name = VERSION_NAME
+                desc = POM_DESCRIPTION//描述，自己定义
+//                released = new Date()
+                vcsTag = 'v1.0.0'
+                attributes = ['gradle-plugin': 'com.use.less:com.use.less.gradle:gradle-useless-plugin']
+            }
+        }
+        configurations = ['archives']
+    }
+    signing {
+        required { isReleaseBuild() && gradle.taskGraph.hasTask("uploadArchives") }
+        sign configurations.archives
+    }
+    task androidJavadocs(type: Javadoc) {
+        failOnError false //必须添加以免出错
+        source = android.sourceSets.main.java.source
+        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    }
+    task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
+        classifier = 'javadoc'
+        from androidJavadocs.destinationDir
+    }
+    task androidSourcesJar(type: Jar) {
+        classifier = 'sources'
+        from android.sourceSets.main.java.source
+    }
+    //这里androidJavadocs和上述task androidJavadocs是对应关系
+    androidJavadocs {
+        options {
+            //如果你的项目里面有中文注释的话，必须将格式设置为UTF-8，不然会出现乱码
+            encoding "UTF-8"
+            charSet 'UTF-8'
+            author true
+            version true
+        }
+    }
+} else {
+    bintray {
+        user = properties.getProperty("bintray.user")
+        key = properties.getProperty("bintray.apikey")
+        pkg {
+            repo = POM_ARTIFACT_ID //自己创建的仓库名字
+            name = POM_NAME //上传到JCenter的名字,最终引用的名字
+            websiteUrl = POM_URL
+            vcsUrl = POM_GIT_URL
+            // 软件开源协议，现在一般都是Apache License2.0吧，复制我的，这里不需要修改。
+            licenses = ["Apache-2.0"]
+//        userOrg = 'mumusalibrary' //自己创建的organization名称
+            publish = true // 是否是公开项目，公开别人可以引用
+
+            version {
+                name = VERSION_NAME
+                desc = POM_DESCRIPTION//描述，自己定义
+//                released = new Date()
+                vcsTag = VCSTAG
+                attributes = ['gradle-plugin': 'com.use.less:com.use.less.gradle:gradle-useless-plugin']
+            }
+        }
+        configurations = ['archives']
+    }
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+    task javadocJar(type: Jar, dependsOn: javadoc) {
+        classifier = 'javadoc'
+        from javadoc.destinationDir
+    }
+}
+
+if (JavaVersion.current().isJava8Compatible()) {
+    allprojects {
+        tasks.withType(Javadoc) {
+            options.addStringOption('Xdoclint:none', '-quiet')
+        }
+    }
+}
+
+artifacts {
+    if (project.getPlugins().hasPlugin('com.android.application') ||
+            project.getPlugins().hasPlugin('com.android.library')) {
+        archives androidSourcesJar
+        archives androidJavadocsJar
+    } else {
+        archives sourcesJar
+        archives javadocJar
+    }
+}
