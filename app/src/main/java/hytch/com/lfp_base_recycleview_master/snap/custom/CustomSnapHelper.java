@@ -1,10 +1,11 @@
 package hytch.com.lfp_base_recycleview_master.snap.custom;
 
-import android.support.annotation.Nullable;
-import android.support.v7.widget.PagerSnapHelper;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.PagerSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
 import hytch.com.lfp_base_recycleview_master.listener.RecyclerPageTransformer;
 
@@ -38,8 +39,10 @@ public class CustomSnapHelper extends PagerSnapHelper {
 //
 //                    // TODO: 2018/4/24 滚动距离
 //                    final float transformPos = (float) (child.getLeft() / getClientWidth());
-////                    Log.e("CustomSnapHelp", String.format("%d, %s", recyclerView.computeHorizontalScrollOffset(), "recyclerView.computeHorizontalScrollOffset()"));
-//                    Log.e("CustomSnapHelp", String.format("%.2f, %s", transformPos, "transformPos"));
+////                    Log.e("CustomSnapHelp", String.format("%d, %s", recyclerView
+// .computeHorizontalScrollOffset(), "recyclerView.computeHorizontalScrollOffset()"));
+//                    Log.e("CustomSnapHelp", String.format("%.2f, %s", transformPos,
+//                    "transformPos"));
 //                    recyclerPageTransformer.transformPage(child, transformPos);
 //                }
                 final int childCount = recyclerView.getChildCount();
@@ -49,7 +52,8 @@ public class CustomSnapHelper extends PagerSnapHelper {
 
                     int left = child.getLeft();
                     int right = 1080 - child.getRight();
-                    final float percent = left < 0 || right < 0 ? 0 : Math.min(left, right) * 1f / Math.max(left, right);
+                    final float percent = left < 0 || right < 0 ? 0 :
+                            Math.min(left, right) * 1f / Math.max(left, right);
                     Log.e("tag", "percent = " + percent);
                     float scaleFactor = 0.85f + Math.abs(percent) * (1.0f - 0.85f);
                     child.setScaleY(scaleFactor);

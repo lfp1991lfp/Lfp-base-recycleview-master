@@ -1,12 +1,13 @@
 package com.lfp.lfp_base_recycleview_library.async;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.recyclerview.extensions.ListAdapter;
-import android.support.v7.util.DiffUtil;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.lfp.lfp_base_recycleview_library.MultiItemTypeAdapter;
 import com.lfp.lfp_base_recycleview_library.base.ItemViewDelegate;
@@ -29,7 +30,8 @@ public abstract class AsyncMultiItemTypeAdapter<T> extends ListAdapter<T, LfpVie
     private ItemViewDelegateManager<T> itemViewDelegateManager;
     private MultiItemTypeAdapter.OnItemClickListener onItemClickListener;
 
-    protected AsyncMultiItemTypeAdapter(Context context, List<T> dataList, DiffUtil.ItemCallback<T> itemCallback) {
+    protected AsyncMultiItemTypeAdapter(Context context, List<T> dataList,
+                                        DiffUtil.ItemCallback<T> itemCallback) {
         super(itemCallback);
         this.context = context;
         this.dataList = dataList != null ? dataList : new ArrayList<T>();
@@ -61,7 +63,8 @@ public abstract class AsyncMultiItemTypeAdapter<T> extends ListAdapter<T, LfpVie
     }
 
     @Override
-    public void onBindViewHolder(@NonNull LfpViewHolder holder, int position, List<Object> payloads) {
+    public void onBindViewHolder(@NonNull LfpViewHolder holder, int position,
+                                 List<Object> payloads) {
         onBindViewHolder(holder, position);
 //        if (payloads.isEmpty()) {
 //            onBindViewHolder(holder, position);
@@ -108,7 +111,8 @@ public abstract class AsyncMultiItemTypeAdapter<T> extends ListAdapter<T, LfpVie
 
     }
 
-    protected void setListener(final ViewGroup parent, final LfpViewHolder viewHolder, int viewType) {
+    protected void setListener(final ViewGroup parent, final LfpViewHolder viewHolder,
+                               int viewType) {
         if (!isEnabled(viewType)) return;
         viewHolder.getConvertView().setOnClickListener(new View.OnClickListener() {
             @Override

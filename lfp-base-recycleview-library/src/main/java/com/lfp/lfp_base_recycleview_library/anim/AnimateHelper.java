@@ -1,7 +1,8 @@
 package com.lfp.lfp_base_recycleview_library.anim;
 
-import android.support.annotation.IntDef;
 import android.view.animation.OvershootInterpolator;
+
+import androidx.annotation.IntDef;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -13,23 +14,23 @@ import java.lang.annotation.RetentionPolicy;
 
 public final class AnimateHelper {
 
-  public static final int SCALE_RIGHT = 0x01;
-  public static final int SCALE_BOTTOM = 0x02;
-  public static final int SCALE_LEFT = 0x03;
+    public static final int SCALE_RIGHT = 0x01;
+    public static final int SCALE_BOTTOM = 0x02;
+    public static final int SCALE_LEFT = 0x03;
 
-  public static BaseItemAnimator animation(@ItemAnimation int animator, float level) {
-    switch (animator) {
-      case SCALE_LEFT:
-        return new ScaleInRightAnimator(new OvershootInterpolator(level));
-      case SCALE_BOTTOM:
-        return new ScaleInBottomAnimator(new OvershootInterpolator(level));
-      default:
-        return new ScaleInRightAnimator(new OvershootInterpolator(level));
+    public static BaseItemAnimator animation(@ItemAnimation int animator, float level) {
+        switch (animator) {
+            case SCALE_LEFT:
+                return new ScaleInRightAnimator(new OvershootInterpolator(level));
+            case SCALE_BOTTOM:
+                return new ScaleInBottomAnimator(new OvershootInterpolator(level));
+            default:
+                return new ScaleInRightAnimator(new OvershootInterpolator(level));
+        }
     }
-  }
 
-  @IntDef({SCALE_RIGHT, SCALE_BOTTOM, SCALE_LEFT})
-  @Retention(RetentionPolicy.SOURCE)
-  public @interface ItemAnimation {
-  }
+    @IntDef({SCALE_RIGHT, SCALE_BOTTOM, SCALE_LEFT})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface ItemAnimation {
+    }
 }

@@ -1,7 +1,7 @@
 package hytch.com.lfp_base_recycleview_master.view;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 

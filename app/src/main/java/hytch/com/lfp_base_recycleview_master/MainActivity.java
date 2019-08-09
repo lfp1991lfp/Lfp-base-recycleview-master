@@ -3,10 +3,11 @@ package hytch.com.lfp_base_recycleview_master;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.lfp.lfp_base_recycleview_library.MultiItemTypeAdapter;
 import com.lfp.lfp_base_recycleview_library.anim.AnimateHelper;

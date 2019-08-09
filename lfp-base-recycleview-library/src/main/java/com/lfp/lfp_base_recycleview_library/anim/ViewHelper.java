@@ -1,7 +1,8 @@
 package com.lfp.lfp_base_recycleview_library.anim;
 
-import android.support.v4.view.ViewCompat;
 import android.view.View;
+
+import androidx.core.view.ViewCompat;
 
 /**
  * Copyright (C) 2015 Wasabeef

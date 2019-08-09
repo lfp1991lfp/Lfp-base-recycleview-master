@@ -1,7 +1,8 @@
 package hytch.com.lfp_base_recycleview_master.scroll.util;
 
-import android.support.v7.widget.LinearSnapHelper;
 import android.util.Log;
+
+import androidx.recyclerview.widget.LinearSnapHelper;
 
 /**
  * Created by yuantongqin on 2016/11/18.
@@ -12,7 +13,8 @@ public class CustomLinearSnapHelper extends LinearSnapHelper {
     public static boolean mStateIdle = false;
 
     /**
-     * //                 *  int[] snapDistance = calculateDistanceToFinalSnap(layoutManager, snapView);
+     * //                 *  int[] snapDistance = calculateDistanceToFinalSnap(layoutManager,
+     * snapView);
      * //                 if (snapDistance[0] != 0 || snapDistance[1] != 0) {
      * //                 mRecyclerView.smoothScrollBy(snapDistance[0], snapDistance[1]);
      * //                 }

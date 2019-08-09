@@ -1,7 +1,7 @@
 package com.lfp.lfp_base_recycleview_library.async;
 
 import android.content.Context;
-import android.support.v7.util.DiffUtil;
+import androidx.recyclerview.widget.DiffUtil;
 import android.view.LayoutInflater;
 
 import com.lfp.lfp_base_recycleview_library.base.ItemViewDelegate;

@@ -1,22 +1,23 @@
 package com.lfp.lfp_base_recycleview_library.anim;
 
-import android.support.v4.view.ViewPropertyAnimatorListener;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
+import androidx.core.view.ViewPropertyAnimatorListener;
+import androidx.recyclerview.widget.RecyclerView;
 
 public abstract class AnimateViewHolder extends RecyclerView.ViewHolder {
 
-  public AnimateViewHolder(View itemView) {
-    super(itemView);
-  }
+    public AnimateViewHolder(View itemView) {
+        super(itemView);
+    }
 
-  public void preAnimateAddImpl() {
-  }
+    public void preAnimateAddImpl() {
+    }
 
-  public void preAnimateRemoveImpl() {
-  }
+    public void preAnimateRemoveImpl() {
+    }
 
-  public abstract void animateAddImpl(ViewPropertyAnimatorListener listener);
+    public abstract void animateAddImpl(ViewPropertyAnimatorListener listener);
 
-  public abstract void animateRemoveImpl(ViewPropertyAnimatorListener listener);
+    public abstract void animateRemoveImpl(ViewPropertyAnimatorListener listener);
 }

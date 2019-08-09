@@ -1,11 +1,12 @@
 package com.lfp.lfp_base_recycleview_library;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.util.DiffUtil;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.lfp.lfp_base_recycleview_library.base.ItemViewDelegate;
 import com.lfp.lfp_base_recycleview_library.base.ItemViewDelegateManager;
@@ -73,7 +74,8 @@ public abstract class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<LfpVi
     }
 
 
-    protected void setListener(final ViewGroup parent, final LfpViewHolder viewHolder, int viewType) {
+    protected void setListener(final ViewGroup parent, final LfpViewHolder viewHolder,
+                               int viewType) {
         if (!isEnabled(viewType)) return;
         viewHolder.getConvertView().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,7 +105,8 @@ public abstract class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<LfpVi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull LfpViewHolder holder, int position, List<Object> payloads) {
+    public void onBindViewHolder(@NonNull LfpViewHolder holder, int position,
+                                 List<Object> payloads) {
         onBindViewHolder(holder, position);
     }
 

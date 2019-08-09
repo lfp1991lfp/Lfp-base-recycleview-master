@@ -1,6 +1,6 @@
 package com.lfp.lfp_base_recycleview_library.listener;
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by linfp on 2016/4/8.

@@ -1,12 +1,13 @@
 package hytch.com.lfp_base_recycleview_master.scroll;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,12 +41,14 @@ public class MainActivity2 extends AppCompatActivity {
         setContentView(R.layout.activity_main2);
 
         recycler = findViewById(R.id.recyclerView);
-        LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        LinearLayoutManager manager = new LinearLayoutManager(this,
+                LinearLayoutManager.HORIZONTAL, false);
         recycler.setLayoutManager(manager);
 //        manager.findViewByPosition(1);
 //        manager.findFirstVisibleItemPosition();
         List<String> mlist = new ArrayList<>();
-        String[] images = {"http://desk.fd.zol-img.com.cn/t_s960x600c5/g4/M01/0D/04/Cg-4WVP_npmIY6GRAKcKYPPMR3wAAQ8LgNIuTMApwp4015.jpg",
+        String[] images = {"http://desk.fd.zol-img.com" +
+                ".cn/t_s960x600c5/g4/M01/0D/04/Cg-4WVP_npmIY6GRAKcKYPPMR3wAAQ8LgNIuTMApwp4015.jpg",
                 "http://img2.3lian.com/2014/f2/164/d/16.jpg",
                 "http://www.86ps.com/uploadfiles/jpg/2011-11/2011110210441978760.jpg",
                 "http://img3.3lian.com/2013/s1/36/d/106.jpg",
@@ -67,7 +70,8 @@ public class MainActivity2 extends AppCompatActivity {
 //        //设置卡片居中
 //        LinearSnapHelper linearSnapHelper = new LinearSnapHelper(){
 //            @Override
-//            public int[] calculateDistanceToFinalSnap(@NonNull RecyclerView.LayoutManager layoutManager, @NonNull View targetView) {
+//            public int[] calculateDistanceToFinalSnap(@NonNull RecyclerView.LayoutManager
+//            layoutManager, @NonNull View targetView) {
 //
 //                if(mNoNeedToScroll){
 //                    return new int[]{0,0};
@@ -94,7 +98,8 @@ public class MainActivity2 extends AppCompatActivity {
                     } else {
                         mNoNeedToScroll = false;
                     }
-//                    if(mCurrentPosition == 0 || mCurrentPosition == recycler.getAdapter().getItemCount()-1){
+//                    if(mCurrentPosition == 0 || mCurrentPosition == recycler.getAdapter()
+//                    .getItemCount()-1){
 //                        mNoNeedToScroll = true;
 //                        Log.e("","===进入了吗2222");
 //                    }else{
@@ -157,7 +162,8 @@ public class MainActivity2 extends AppCompatActivity {
             public void run() {
                 int Width = recycler.getWidth();
                 //实际item的宽度
-                itemWidth = Width - 2 * (ScreenUtils.dip2px(MainActivity2.this, padding) + ScreenUtils.dip2px(MainActivity2.this, left_right));
+                itemWidth =
+                        Width - 2 * (ScreenUtils.dip2px(MainActivity2.this, padding) + ScreenUtils.dip2px(MainActivity2.this, left_right));
                 recycler.smoothScrollToPosition(mCurrentPosition);
                 scaleItemView();
             }
@@ -170,7 +176,8 @@ public class MainActivity2 extends AppCompatActivity {
         // 滑动超过一页说明已翻页
         if (Math.abs(mDistances - mCurrentPosition * itemWidth) >= itemWidth) {
             pageChanged = true;
-            Log.e("tests", Math.abs(mDistances - mCurrentPosition * itemWidth) + "==pageChanged==" + itemWidth);
+            Log.e("tests", Math.abs(mDistances - mCurrentPosition * itemWidth) + "==pageChanged" +
+                    "==" + itemWidth);
         }
         Log.e("tests", mDistances + "==mDistances==itemWidth==" + itemWidth);
         if (pageChanged) {
