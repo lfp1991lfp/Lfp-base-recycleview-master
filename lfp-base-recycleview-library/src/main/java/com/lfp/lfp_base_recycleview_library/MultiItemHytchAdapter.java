@@ -24,4 +24,9 @@ public abstract class MultiItemHytchAdapter<T> extends MultiItemTypeAdapter<T> {
   public boolean areContentsTheSame(T item1, T item2) {
     return false;
   }
+
+  @Override
+  public T getChangePayload(List<T> oldList, int oldItemPosition, List<T> newList, int newItemPosition) {
+    return null;
+  }
 }
